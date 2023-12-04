@@ -14,11 +14,13 @@ const file =
 
 
 
+
+performance.mark('start solve');
 let sum = 0;
 let amount = 0;
 let cursor = 0;
 
-const duplicates = {};
+const duplicates = [];
 
 while (cursor < file.length) {
   if (file[cursor] != 'C') {
@@ -47,7 +49,7 @@ while (cursor < file.length) {
 
   gameNumber = Number(gameNumber);
 
-  let winning = new Set();
+  let winning = [];
   while (file[cursor] != '|') {
     let num = '';
 
@@ -66,7 +68,7 @@ while (cursor < file.length) {
     }
 
     num = Number(num);
-    winning.add(num);
+    winning.push(num);
   }
 
   while (file[cursor] != 'C' && cursor < file.length) {
@@ -83,15 +85,21 @@ while (cursor < file.length) {
       cursor++;
     }
     num = Number(num);
-    if (winning.has(num)) points++;
+    if (winning.includes(num)) points++;
+  }
+
+  duplicates[gameNumber] ??= 0;
+  
+  for (let i = 0; i <= points; i++) {
+    duplicates[gameNumber + i] ??= 0;
   }
 
   amount++;
   if (points) {
-    for (let j = 0; j <= (duplicates[gameNumber] ?? 0); j++) {
+    for (let j = 0; j <= duplicates[gameNumber]; j++) {
       for (let i = 1; i <= points; i++) {
         amount++;
-        duplicates[gameNumber + i] = (duplicates[gameNumber + i] ?? 0) + 1;
+        duplicates[gameNumber + i] = duplicates[gameNumber + i] + 1;
       }
     }
   }
@@ -101,4 +109,7 @@ while (cursor < file.length) {
 
 }
 
-console.log(sum, amount, 30);
+performance.mark('stop solve');
+console.log(sum, amount, 11024379);
+
+console.log(performance.measure('solve', 'start solve', 'stop solve'));
