@@ -30,11 +30,7 @@ while (cursor < file.length) {
 
   let points = 0;
 
-  for (const tokenChar of 'Card') {
-    const char = file[cursor];
-    if (tokenChar != char) throw new Error('Unexpected Token: ' + tokenChar);
-    cursor++;
-  }
+  cursor += 5;  //Card: string
 
   while (isNaN(Number(file[cursor] + '.'))) { //advance to game number
     cursor++;
